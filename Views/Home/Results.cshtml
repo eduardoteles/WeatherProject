@@ -1,0 +1,22 @@
+﻿@model Weather;
+@{
+    ViewData["Title"] = "Results page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Weather Results</h1>
+    <h2>@Model.LocationName</h2>
+    </br>
+    <div>
+        <h4 style="color:cornflowerblue">
+            <b>
+                @foreach (string data in ViewBag.Output)
+                {
+                    @data
+                    <br />
+                }
+            </b>
+        </h4>
+    </div>
+    </br>
+</div>

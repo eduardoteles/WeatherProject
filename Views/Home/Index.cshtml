@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Authentication.cshtml";
+}
+<main class="form-signin w-100 m-auto">
+    <form asp-action="validation">
+        <img class="mb-4" src="https://i.pinimg.com/originals/77/0b/80/770b805d5c99c7931366c2e84e88f251.png" alt="" width="66" height="67">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" name="username" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <!--Authentication warning message-->
+        @if(ViewData["auth_error"]!=null)
+        {
+            <div class='alert-danger'><label>@ViewData["auth_error"]</label></div><br/>       
+        }
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </form>
+</main>
+
