@@ -75,6 +75,7 @@ namespace WeatherProject.Controllers
             string result = "";
             dynamic weather = JsonConvert.DeserializeObject(body);
             List<string> results = new List<string>();
+            List<string> stationIds = new List<string>();
             foreach (var day in weather.days)
             {
                 results.Add("Forecast for date: " + day.datetime);
@@ -83,6 +84,24 @@ namespace WeatherProject.Controllers
                 results.Add(" The low temperature will be: " + day.tempmin);
                 results.Add("");
             }
+
+            results.Add("------------------------------------");
+            results.Add("Here is the information about the associated stations for this location:");
+            var weatherStations = weather.currentConditions["stations"];
+            string stationDetails = "";
+            foreach (string stationID in weatherStations)
+            {
+                //Station details are distance, latitude, longitude, useCount, id, name, quality, contribution
+                results.Add("Station ID: " + weather.stations[stationID].id);
+                results.Add("Distance: " + weather.stations[stationID].distance);
+                results.Add("Latitude: " + weather.stations[stationID].latitude);
+                results.Add("Longitude: " + weather.stations[stationID].longitude);
+                results.Add("Use Count: " + weather.stations[stationID].useCount);
+                results.Add("Name: " + weather.stations[stationID].name);
+                results.Add("Quality: " + weather.stations[stationID].quality);
+                results.Add("Contribution: " + weather.stations[stationID].contribution);
+                results.Add("");
+            }         
             ViewBag.Output = results;
             return View("Results", wm);
         }
