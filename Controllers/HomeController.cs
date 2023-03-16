@@ -1,17 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using WeatherProject.Data;
 using WeatherProject.Models;
 
 namespace WeatherProject.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly WeatherProjectContext _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, WeatherProjectContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -72,7 +75,6 @@ namespace WeatherProject.Controllers
             response.EnsureSuccessStatusCode(); // Throw an exception if error
             var body = await response.Content.ReadAsStringAsync();
 
-            string result = "";
             dynamic weather = JsonConvert.DeserializeObject(body);
             List<string> results = new List<string>();
             List<string> stationIds = new List<string>();
@@ -83,6 +85,17 @@ namespace WeatherProject.Controllers
                 results.Add(" The high temperature will be: " + day.tempmax);
                 results.Add(" The low temperature will be: " + day.tempmin);
                 results.Add("");
+                //Insert into database
+                Forecast forecastRecord = new Forecast();
+                forecastRecord.Date = day.datetime;
+                forecastRecord.Description = day.description;
+                forecastRecord.TempMax = day.tempmax;
+                forecastRecord.TempMin = day.tempmin;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(forecastRecord);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             results.Add("------------------------------------");
