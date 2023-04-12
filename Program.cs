@@ -3,6 +3,7 @@ using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherProject.Data;
+//Just added a comment
 
 namespace WeatherProject
 {
