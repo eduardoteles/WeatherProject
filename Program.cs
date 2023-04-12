@@ -1,5 +1,8 @@
 using WeatherProject.Models;
 using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using WeatherProject.Data;
 
 namespace WeatherProject
 {
@@ -8,6 +11,8 @@ namespace WeatherProject
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<WeatherProjectContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("WeatherProjectContext") ?? throw new InvalidOperationException("Connection string 'WeatherProjectContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
